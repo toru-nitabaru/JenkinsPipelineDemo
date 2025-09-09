@@ -15,6 +15,16 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying'
+                script {
+                    // Nginxコンテナ名（Docker Composeなどで定義されている名前）
+                    def nginxContainer = 'nginx-test'
+
+                    // JenkinsコンテナからNginxコンテナへファイルをコピー
+                    sh """
+                        docker cp ./src/. ${nginxContainer}:/usr/share/nginx/html/
+                    """
+                }
+
             }
         }
         stage('Test') {
